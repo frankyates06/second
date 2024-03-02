@@ -1,26 +1,17 @@
 import streamlit as st
-from PIL import Image
 
 # Set the page config
-st.set_page_config(page_title="Image Uploader with Custom Layout", layout="wide")
+st.set_page_config(page_title="Greet User", layout="centered")
 
 # Display the app header
-st.header("Image Uploader with Custom Layout")
+st.header("Hello Greeting App")
 
-# Create two columns, with custom styling for the upload column
-upload_col, display_col = st.columns([1, 2])
-with upload_col:
-    st.markdown("## Upload Image")
-    # Use markdown to change the background color of only the upload column
-    st.markdown(""" <style> .st-cb {background-color: grey;} </style> """, unsafe_allow_html=True)
-    file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
+# Ask for the user's name
+name = st.text_input("What's your name?")
 
-if file is not None:
-    with display_col:
-        st.markdown("## Uploaded Image")
-        image = Image.open(file)
-        st.image(image, caption='Nice image!', use_column_width=True)
-        st.markdown("**Nice image!**")
+# Greet the user
+if name:
+    st.write(f"Hello, {name}!")
 else:
-    with display_col:
-        st.write("The uploaded image will be displayed here.")
+    st.write("Please enter your name above.")
+
