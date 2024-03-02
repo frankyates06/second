@@ -1,6 +1,7 @@
-def fancy_hello():
-    greeting = "Hello, World!"
-    border = "*" * (len(greeting) + 4)
-    print(f"{border}\n* {greeting} *\n{border}")
+import streamlit as st
 
-fancy_hello()
+# Title of the application
+st.title('Hello, World! Application')
+
+# Display a simple message
+st.write('This is a simple Streamlit application saying "Hello, World!"')
