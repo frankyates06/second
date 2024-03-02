@@ -1,39 +1,34 @@
 import streamlit as st
-import time
+from PyPDF2 import PdfFileReader, PdfFileMerger
+import io
 
-# Set the page config
-st.set_page_config(page_title="Greet User Fun", layout="centered")
+st.title('PDF Merger')
 
-# Display the app header
-st.header("Fun Greeting App")
+# Allow users to upload PDF files
+pdf_file1 = st.file_uploader("Choose the first PDF file", type=["pdf"])
+pdf_file2 = st.file_uploader("Choose the second PDF file", type=["pdf"])
 
-# Ask for the user's name
-name = st.text_input("What's your name?")
+if pdf_file1 and pdf_file2:
+    # Read the uploaded PDF files
+    pdf1 = PdfFileReader(pdf_file1)
+    pdf2 = PdfFileReader(pdf_file2)
 
-if name:
-    # Placeholder for dynamic content
-    placeholder = st.empty()
+    # Initialize PdfFileMerger object
+    merger = PdfFileMerger()
 
-    # Display a fun and dynamic greeting
-    greeting_styles = [
-        f"<h1 style='color: red;'>Hello, {name}!</h1>",
-        f"<h1 style='color: blue;'>Hello, {name}!</h1>",
-        f"<h1 style='color: green;'>Hello, {name}!</h1>",
-        f"<h1 style='color: purple;'>Hello, {name}!</h1>",
-        f"<h1 style='color: orange;'>Hello, {name}!</h1>",
-        f"<h1 style='font-size: 24px;'>Hello, {name}!</h1>",
-        f"<h1 style='font-size: 32px;'>Hello, {name}!</h1>",
-        f"<h1 style='font-size: 40px;'>Hello, {name}!</h1>",
-        f"<h1 style='font-style: italic;'>Hello, {name}!</h1>",
-        f"<h1 style='text-decoration: underline;'>Hello, {name}!</h1>"
-    ]
+    # Append the PDF files
+    merger.append(pdf1)
+    merger.append(pdf2)
 
-    for style in greeting_styles:
-        placeholder.markdown(style, unsafe_allow_html=True)
-        time.sleep(0.5)  # Pause for half a second
+    # Write out the merged PDF to a bytes buffer
+    merged_pdf = io.BytesIO()
+    merger.write(merged_pdf)
+    merged_pdf.seek(0)
 
-    # Display a final static greeting
-    placeholder.markdown(f"<h1>Hello, {name}!</h1>", unsafe_allow_html=True)
-else:
-    st.write("Please enter your name above to see the magic.")
-
+    # Let the user download the merged PDF
+    st.download_button(
+        label="Download Merged PDF",
+        data=merged_pdf,
+        file_name="merged.pdf",
+        mime="application/pdf"
+    )
