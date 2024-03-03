@@ -39,6 +39,8 @@ else:
 
 
 # test
+pip install biopython
+
 from Bio.Seq import Seq
 from Bio.SeqUtils import GC
 
