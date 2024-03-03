@@ -1,1 +1,1 @@
-biopython
+git+https://github.com/talumbau/PyPDF2
